@@ -16,7 +16,7 @@ export default function TenantDetailPage({ params }: { params: Promise<{ id: str
   async function loadTenant() {
     setLoading(true);
     try {
-      const res = await apiClient.get(`/superadmin/tenants/${id}`) as { data: any };
+      const res = await apiClient.get(`/api/v1/superadmin/tenants/${id}`) as { data: any };
       setTenant(res.data);
     } catch (err: any) {
       toast.error(err.message || "Failed to load tenant");

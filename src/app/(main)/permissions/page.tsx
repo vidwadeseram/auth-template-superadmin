@@ -5,7 +5,6 @@ import { useAuth } from "@vidwadeseram/auth-ui-shared";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 
 export default function PermissionsPage() {
@@ -16,7 +15,7 @@ export default function PermissionsPage() {
   async function loadPermissions() {
     setLoading(true);
     try {
-      const res = await apiClient.get("/superadmin/permissions") as { data: string[] };
+      const res = await apiClient.get("/api/v1/superadmin/permissions") as { data: string[] };
       setPermissions(res.data || []);
     } catch (err: any) {
       toast.error(err.message || "Failed to load permissions");
