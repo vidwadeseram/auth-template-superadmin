@@ -18,7 +18,7 @@ export default function ForgotPasswordPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault(); setLoading(true);
     try { await forgotPassword(email); setSent(true); toast.success("Reset link sent"); }
-    catch (err: any) { toast.error(err.message || "Failed"); }
+    catch (err: unknown) { toast.error((err instanceof Error ? err.message : null) || "Failed"); }
     finally { setLoading(false); }
   }
 

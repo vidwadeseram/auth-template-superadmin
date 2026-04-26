@@ -17,8 +17,8 @@ export default function PermissionsPage() {
     try {
       const res = await apiClient.get("/api/v1/superadmin/permissions") as { data: string[] };
       setPermissions(res.data || []);
-    } catch (err: any) {
-      toast.error(err.message || "Failed to load permissions");
+    } catch (err: unknown) {
+      toast.error((err instanceof Error ? err.message : null) || "Failed to load permissions");
     } finally {
       setLoading(false);
     }

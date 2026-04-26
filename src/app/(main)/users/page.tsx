@@ -32,8 +32,8 @@ export default function AllUsersPage() {
     try {
       const res = await apiClient.get("/api/v1/superadmin/users") as { data: User[] };
       setUsers(res.data || []);
-    } catch (err: any) {
-      toast.error(err.message || "Failed to load users");
+    } catch (err: unknown) {
+      toast.error((err instanceof Error ? err.message : null) || "Failed to load users");
     } finally {
       setLoading(false);
     }

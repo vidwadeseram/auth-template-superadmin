@@ -20,7 +20,7 @@ export default function SuperadminLoginPage() {
     e.preventDefault();
     setLoading(true);
     try { await login(email, password); toast.success("Logged in"); router.push("/dashboard"); }
-    catch (err: any) { toast.error(err.message || "Login failed"); }
+    catch (err: unknown) { toast.error((err instanceof Error ? err.message : null) || "Login failed"); }
     finally { setLoading(false); }
   }
 

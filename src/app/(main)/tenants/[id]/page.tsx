@@ -7,19 +7,27 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
+interface Tenant {
+  id: string;
+  name: string;
+  slug: string;
+  is_active: boolean;
+  created_at: string;
+}
+
 export default function TenantDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { apiClient } = useAuth();
-  const [tenant, setTenant] = useState<any>(null);
+  const [tenant, setTenant] = useState<Tenant | null>(null);
   const [loading, setLoading] = useState(false);
 
   async function loadTenant() {
     setLoading(true);
     try {
-      const res = await apiClient.get(`/api/v1/superadmin/tenants/${id}`) as { data: any };
+      const res = await apiClient.get(`/api/v1/superadmin/tenants/${id}`) as { data: Tenant };
       setTenant(res.data);
-    } catch (err: any) {
-      toast.error(err.message || "Failed to load tenant");
+    } catch (err: unknown) {
+      toast.error((err instanceof Error ? err.message : null) || "Failed to load tenant");
     } finally {
       setLoading(false);
     }
