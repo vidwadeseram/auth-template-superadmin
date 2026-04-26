@@ -18,7 +18,9 @@ jobs:
       - run: npm ci --legacy-peer-deps
       - run: npm run build
       - name: Type check
-        run: npx tsc --noEmit || true
+        run: npx tsc --noEmit
+      - name: Security audit
+        run: npm audit --audit-level=high || true
 
   e2e:
     runs-on: ubuntu-latest
