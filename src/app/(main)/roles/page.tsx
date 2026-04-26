@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "@vidwadeseram/auth-ui-shared";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,9 +18,9 @@ interface Role {
 export default function RolesPage() {
   const { apiClient } = useAuth();
   const [roles, setRoles] = useState<Role[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  async function loadRoles() {
+  const loadRoles = useCallback(async () => {
     setLoading(true);
     try {
       const res = await apiClient.get("/api/v1/superadmin/roles") as { data: Role[] };
@@ -36,7 +36,7 @@ export default function RolesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Platform Roles</h1>
-        <Button onClick={loadRoles} disabled={loading}>{loading ? "Loading..." : "Load Roles"}</Button>
+        <Button onClick={loadRoles} disabled={loading}>{loading ? "Loading..." : "Refresh"}</Button>
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {roles.length === 0 ? (

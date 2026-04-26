@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useAuth } from "@vidwadeseram/auth-ui-shared";
 import { Button } from "@/components/ui/button";
@@ -22,10 +22,10 @@ interface Tenant {
 export default function TenantsPage() {
   const { apiClient } = useAuth();
   const [tenants, setTenants] = useState<Tenant[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
-  async function loadTenants() {
+  const loadTenants = useCallback(async () => {
     setLoading(true);
     try {
       const res = await apiClient.get("/api/v1/superadmin/tenants") as { data: Tenant[] };
@@ -35,7 +35,9 @@ export default function TenantsPage() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [apiClient]);
+
+  useEffect(() => { loadTenants(); }, [loadTenants]);
 
   const filtered = tenants.filter((t) => !search || t.name.toLowerCase().includes(search.toLowerCase()));
 
@@ -43,7 +45,7 @@ export default function TenantsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">All Tenants</h1>
-        <Button onClick={loadTenants} disabled={loading}>{loading ? "Loading..." : "Load Tenants"}</Button>
+        <Button onClick={loadTenants} disabled={loading}>{loading ? "Loading..." : "Refresh"}</Button>
       </div>
       <Input placeholder="Search tenants..." value={search} onChange={(e) => setSearch(e.target.value)} className="max-w-sm" />
       <Card>

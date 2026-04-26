@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "@vidwadeseram/auth-ui-shared";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,9 +10,9 @@ import { toast } from "sonner";
 export default function PermissionsPage() {
   const { apiClient } = useAuth();
   const [permissions, setPermissions] = useState<string[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  async function loadPermissions() {
+  const loadPermissions = useCallback(async () => {
     setLoading(true);
     try {
       const res = await apiClient.get("/api/v1/superadmin/permissions") as { data: string[] };
@@ -36,7 +36,7 @@ export default function PermissionsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Permissions</h1>
-        <Button onClick={loadPermissions} disabled={loading}>{loading ? "Loading..." : "Load Permissions"}</Button>
+        <Button onClick={loadPermissions} disabled={loading}>{loading ? "Loading..." : "Refresh"}</Button>
       </div>
       {Object.keys(grouped).length === 0 ? (
         <Card><CardContent className="p-8 text-center text-muted-foreground">No permissions loaded.</CardContent></Card>

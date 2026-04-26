@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useAuth } from "@vidwadeseram/auth-ui-shared";
 import { Button } from "@/components/ui/button";
@@ -24,10 +24,10 @@ interface User {
 export default function AllUsersPage() {
   const { apiClient } = useAuth();
   const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
-  async function loadUsers() {
+  const loadUsers = useCallback(async () => {
     setLoading(true);
     try {
       const res = await apiClient.get("/api/v1/superadmin/users") as { data: User[] };
@@ -37,7 +37,9 @@ export default function AllUsersPage() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [apiClient]);
+
+  useEffect(() => { loadUsers(); }, [loadUsers]);
 
   const filtered = users.filter((u) => !search || u.email.toLowerCase().includes(search.toLowerCase()));
 
@@ -45,7 +47,7 @@ export default function AllUsersPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">All Users</h1>
-        <Button onClick={loadUsers} disabled={loading}>{loading ? "Loading..." : "Load Users"}</Button>
+        <Button onClick={loadUsers} disabled={loading}>{loading ? "Loading..." : "Refresh"}</Button>
       </div>
       <Input placeholder="Search users..." value={search} onChange={(e) => setSearch(e.target.value)} className="max-w-sm" />
       <Card>
