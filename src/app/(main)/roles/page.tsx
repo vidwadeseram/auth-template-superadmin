@@ -30,7 +30,9 @@ export default function RolesPage() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [apiClient]);
+
+  useEffect(() => { loadRoles(); }, [loadRoles]);
 
   return (
     <div className="space-y-6">

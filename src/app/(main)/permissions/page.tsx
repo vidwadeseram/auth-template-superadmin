@@ -22,7 +22,9 @@ export default function PermissionsPage() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [apiClient]);
+
+  useEffect(() => { loadPermissions(); }, [loadPermissions]);
 
   // Group permissions by resource
   const grouped = permissions.reduce<Record<string, string[]>>((acc, p) => {
