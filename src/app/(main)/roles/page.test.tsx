@@ -31,7 +31,7 @@ describe("RolesPage", () => {
       apiClient: {
         get: vi.fn(() => new Promise(() => {})),
       },
-    } as ReturnType<typeof useAuth>);
+    } as unknown as ReturnType<typeof useAuth>);
 
     render(<RolesPage />);
     expect(screen.getByText("Loading...")).toBeInTheDocument();
@@ -47,7 +47,7 @@ describe("RolesPage", () => {
       apiClient: {
         get: vi.fn().mockResolvedValue({ data: mockRoles }),
       },
-    } as ReturnType<typeof useAuth>);
+    } as unknown as ReturnType<typeof useAuth>);
 
     render(<RolesPage />);
 
@@ -66,7 +66,7 @@ describe("RolesPage", () => {
       apiClient: {
         get: vi.fn().mockResolvedValue({ data: [] }),
       },
-    } as ReturnType<typeof useAuth>);
+    } as unknown as ReturnType<typeof useAuth>);
 
     render(<RolesPage />);
 
@@ -81,7 +81,7 @@ describe("RolesPage", () => {
       apiClient: {
         get: vi.fn().mockRejectedValue(new Error("Network error")),
       },
-    } as ReturnType<typeof useAuth>);
+    } as unknown as ReturnType<typeof useAuth>);
 
     render(<RolesPage />);
 
@@ -94,7 +94,7 @@ describe("RolesPage", () => {
     const mockGet = vi.fn().mockResolvedValue({ data: [] });
     mockUseAuth.mockReturnValue({
       apiClient: { get: mockGet },
-    } as ReturnType<typeof useAuth>);
+    } as unknown as ReturnType<typeof useAuth>);
 
     render(<RolesPage />);
 
