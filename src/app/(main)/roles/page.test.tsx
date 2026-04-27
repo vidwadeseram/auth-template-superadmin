@@ -19,7 +19,7 @@ vi.mock("next/link", () => ({
 import { useAuth } from "@vidwadeseram/auth-ui-shared";
 import RolesPage from "@/app/(main)/roles/page";
 
-const mockUseAuth = vi.mocked(useAuth);
+const mockUseAuth = useAuth as ReturnType<typeof vi.fn>;
 
 describe("RolesPage", () => {
   beforeEach(() => {
@@ -28,10 +28,8 @@ describe("RolesPage", () => {
 
   it("shows loading state initially", () => {
     mockUseAuth.mockReturnValue({
-      apiClient: {
-        get: vi.fn(() => new Promise(() => {})),
-      },
-    } as unknown as ReturnType<typeof useAuth>);
+      apiClient: { get: vi.fn(() => new Promise(() => {})) },
+    });
 
     render(<RolesPage />);
     expect(screen.getByText("Loading...")).toBeInTheDocument();
@@ -44,10 +42,8 @@ describe("RolesPage", () => {
     ];
 
     mockUseAuth.mockReturnValue({
-      apiClient: {
-        get: vi.fn().mockResolvedValue({ data: mockRoles }),
-      },
-    } as unknown as ReturnType<typeof useAuth>);
+      apiClient: { get: vi.fn().mockResolvedValue({ data: mockRoles }) },
+    });
 
     render(<RolesPage />);
 
@@ -63,10 +59,8 @@ describe("RolesPage", () => {
 
   it("shows empty state when no roles returned", async () => {
     mockUseAuth.mockReturnValue({
-      apiClient: {
-        get: vi.fn().mockResolvedValue({ data: [] }),
-      },
-    } as unknown as ReturnType<typeof useAuth>);
+      apiClient: { get: vi.fn().mockResolvedValue({ data: [] }) },
+    });
 
     render(<RolesPage />);
 
@@ -78,10 +72,8 @@ describe("RolesPage", () => {
   it("shows error toast on fetch failure", async () => {
     const { toast } = await import("sonner");
     mockUseAuth.mockReturnValue({
-      apiClient: {
-        get: vi.fn().mockRejectedValue(new Error("Network error")),
-      },
-    } as unknown as ReturnType<typeof useAuth>);
+      apiClient: { get: vi.fn().mockRejectedValue(new Error("Network error")) },
+    });
 
     render(<RolesPage />);
 
@@ -94,7 +86,7 @@ describe("RolesPage", () => {
     const mockGet = vi.fn().mockResolvedValue({ data: [] });
     mockUseAuth.mockReturnValue({
       apiClient: { get: mockGet },
-    } as unknown as ReturnType<typeof useAuth>);
+    });
 
     render(<RolesPage />);
 
