@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import { auditLog } from "@/lib/audit-logger";
 
 interface User {
   id: string;
@@ -39,7 +40,7 @@ export default function AllUsersPage() {
     }
   }, [apiClient]);
 
-  useEffect(() => { loadUsers(); }, [loadUsers]);
+  useEffect(() => { auditLog("view_users"); loadUsers(); }, [loadUsers]);
 
   const filtered = users.filter((u) => !search || u.email.toLowerCase().includes(search.toLowerCase()));
 

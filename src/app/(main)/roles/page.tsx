@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import { auditLog } from "@/lib/audit-logger";
 
 interface Role {
   id: string;
@@ -32,7 +33,7 @@ export default function RolesPage() {
     }
   }, [apiClient]);
 
-  useEffect(() => { loadRoles(); }, [loadRoles]);
+  useEffect(() => { auditLog("view_roles"); loadRoles(); }, [loadRoles]);
 
   return (
     <div className="space-y-6">

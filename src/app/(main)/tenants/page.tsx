@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import { auditLog } from "@/lib/audit-logger";
 
 interface Tenant {
   id: string;
@@ -37,7 +38,7 @@ export default function TenantsPage() {
     }
   }, [apiClient]);
 
-  useEffect(() => { loadTenants(); }, [loadTenants]);
+  useEffect(() => { auditLog("view_tenants"); loadTenants(); }, [loadTenants]);
 
   const filtered = tenants.filter((t) => !search || t.name.toLowerCase().includes(search.toLowerCase()));
 

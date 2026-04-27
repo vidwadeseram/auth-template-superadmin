@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import { auditLog } from "@/lib/audit-logger";
 
 export default function PermissionsPage() {
   const { apiClient } = useAuth();
@@ -24,7 +25,7 @@ export default function PermissionsPage() {
     }
   }, [apiClient]);
 
-  useEffect(() => { loadPermissions(); }, [loadPermissions]);
+  useEffect(() => { auditLog("view_permissions"); loadPermissions(); }, [loadPermissions]);
 
   // Group permissions by resource
   const grouped = permissions.reduce<Record<string, string[]>>((acc, p) => {

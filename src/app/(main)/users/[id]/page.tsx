@@ -1,11 +1,12 @@
 "use client";
 
-import { use, useState } from "react";
+import { use, useState, useEffect } from "react";
 import { useAuth } from "@vidwadeseram/auth-ui-shared";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { auditLog } from "@/lib/audit-logger";
 
 interface UserData {
   id: string;
@@ -23,6 +24,8 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
   const { apiClient } = useAuth();
   const [user, setUser] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => { auditLog("view_user_detail", { userId: id }); }, [id]);
 
   async function loadUser() {
     setLoading(true);
